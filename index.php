@@ -1,7 +1,7 @@
 <?php
 $is_auth = rand(0, 1);
 
-$user_name = 'Mansur<nav class="user-menu">'; // укажите здесь ваше имя
+$user_name = 'Mansur'; // укажите здесь ваше имя
 ?>
 <!DOCTYPE html>
 <html lang="ru">
