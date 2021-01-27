@@ -5,11 +5,11 @@ $user_name = 'Mansur'; // укажите здесь ваше имя
 
 $categories  = [
         'boards' => 'Доски и лыжи' ,
-        'mounts' => 'Крепления',
+        'attachment' => 'Крепления',
         'boots' => 'Ботинки',
-        'clothes' => 'Одежда',
-        'instruments' => 'Инструменты',
-        'different' => 'Разное'
+        'clothing' => 'Одежда',
+        'tools' => 'Инструменты',
+        'other' => 'Разное'
 ];
 $lots = [
     [
@@ -113,9 +113,9 @@ function format_price ($price){
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <?php foreach ($categories  as $type ): ?>
-                <li class="promo__item promo__item--boards">
-                    <a class="promo__link" href="pages/all-lots.html"><?= $type; ?></a>
+            <?php foreach ($categories  as $key => $category ): ?>
+                <li class="promo__item promo__item--<?= $key; ?>">
+                    <a class="promo__link" href="pages/all-lots.html"><?= $category; ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -153,9 +153,9 @@ function format_price ($price){
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <?php foreach ($categories  as $type): ?>
+            <?php foreach ($categories  as $category): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= $type; ?></a>
+                    <a href="pages/all-lots.html"><?= $category; ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
