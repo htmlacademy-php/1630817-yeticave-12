@@ -3,7 +3,14 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Mansur'; // укажите здесь ваше имя
 
-$types = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
+$types = [
+        'boards' => 'Доски и лыжи' ,
+        'mounts' => 'Крепления',
+        'boots' => 'Ботинки',
+        'clothes' => 'Одежда',
+        'instruments' => 'Инструменты',
+        'different' => 'Разное'
+];
 $lots = [
     [
         'title' => '2014 Rossignol District Snowboard',
@@ -42,6 +49,13 @@ $lots = [
         'image' => 'img/lot-6.jpg',
     ]
 ];
+
+function format_price ($price){
+    if (ceil($price) > 1000 ) {
+        return substr($price,0,-3) . ' ' . substr($price, -3) . ' <b class="rub">р</b>';
+    }
+    return $price.' <b class="rub">р</b>';
+}
 
 ?>
 <!DOCTYPE html>
@@ -93,7 +107,7 @@ $lots = [
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <?php foreach ($types as $type): ?>
+            <?php foreach ($types as $type ): ?>
                 <li class="promo__item promo__item--boards">
                     <a class="promo__link" href="pages/all-lots.html"><?= $type; ?></a>
                 </li>
@@ -116,7 +130,7 @@ $lots = [
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount">Стартовая цена</span>
-                                <span class="lot__cost"><?= $lot['price'];?><b class="rub">р</b></span>
+                                <span class="lot__cost"><?= format_price($lot['price']);?></span>
                             </div>
                             <div class="lot__timer timer">
                                 12:23
