@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Mansur Taktashev](https://up.htmlacademy.ru/php/12/user/1630817).
-* Наставник: `Неизвестно`.
+* Наставник: Антон Попов.
 
 ---
 
