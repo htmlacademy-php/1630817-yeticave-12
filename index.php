@@ -3,7 +3,7 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Mansur'; // укажите здесь ваше имя
 
-$types = [
+$categories  = [
         'boards' => 'Доски и лыжи' ,
         'mounts' => 'Крепления',
         'boots' => 'Ботинки',
@@ -15,38 +15,44 @@ $lots = [
     [
         'title' => '2014 Rossignol District Snowboard',
         'type' => 'Доски и лыжи',
-        'price' => '10999',
+        'price' => 10999,
         'image' => 'img/lot-1.jpg',
+        'timer' => "16:16",
     ],
     [
         'title' => 'DC Ply Mens 2016/2017 Snowboard',
         'type' => 'Доски и лыжи',
-        'price' => '159999',
+        'price' => 159999,
         'image' => 'img/lot-2.jpg',
+        'timer' => "11:22",
     ],
     [
         'title' => 'Крепления Union Contact Pro 2015 года размер L/XL',
         'type' => 'Крепления',
-        'price' => '8000',
+        'price' => 8000,
         'image' => 'img/lot-3.jpg',
+        'timer' => "13:13",
     ],
     [
         'title' => 'Ботинки для сноуборда DC Mutiny Charocal',
         'type' => 'Ботинки',
-        'price' => '10999',
+        'price' => 10999,
         'image' => 'img/lot-4.jpg',
+        'timer' => "21:21",
     ],
     [
         'title' => 'Куртка для сноуборда DC Mutiny Charocal',
         'type' => 'Одежда',
-        'price' => '7500',
+        'price' => 7500,
         'image' => 'img/lot-5.jpg',
+        'timer' => "23:23",
     ],
     [
         'title' => 'Маска Oakley Canopy',
         'type' => 'Разное',
-        'price' => '5400',
+        'price' => 5400,
         'image' => 'img/lot-6.jpg',
+        'timer' => "23:44",
     ]
 ];
 
@@ -107,7 +113,7 @@ function format_price ($price){
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <?php foreach ($types as $type ): ?>
+            <?php foreach ($categories  as $type ): ?>
                 <li class="promo__item promo__item--boards">
                     <a class="promo__link" href="pages/all-lots.html"><?= $type; ?></a>
                 </li>
@@ -133,7 +139,7 @@ function format_price ($price){
                                 <span class="lot__cost"><?= format_price($lot['price']);?></span>
                             </div>
                             <div class="lot__timer timer">
-                                12:23
+                               <?= $lot['timer']; ?>
                             </div>
                         </div>
                     </div>
@@ -147,7 +153,7 @@ function format_price ($price){
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <?php foreach ($types as $type): ?>
+            <?php foreach ($categories  as $type): ?>
                 <li class="nav__item">
                     <a href="pages/all-lots.html"><?= $type; ?></a>
                 </li>
