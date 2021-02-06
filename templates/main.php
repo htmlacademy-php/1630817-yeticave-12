@@ -4,8 +4,8 @@
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
             <?php foreach ($categories  as $key => $category ): ?>
-                <li class="promo__item promo__item--<?= strip_tags($key); ?>">
-                    <a class="promo__link" href="pages/all-lots.html"><?= strip_tags($category); ?></a>
+                <li class="promo__item promo__item--<?= strip_tags($category['title']); ?>">
+                    <a class="promo__link" href="pages/all-lots.html"><?= strip_tags($category['translation']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -21,15 +21,15 @@
                         <img src="<?= strip_tags($lot['image']); ?>" width="350" height="260" alt="">
                     </div>
                     <div class="lot__info">
-                        <span class="lot__category"><?= strip_tags($lot['type']); ?></span>
+                        <span class="lot__category"><?= strip_tags($lot['category']); ?></span>
                         <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= strip_tags($lot['title']); ?></a></h3>
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount">Стартовая цена</span>
-                                <span class="lot__cost"><?= strip_tags(format_price($lot['price']));?></span>
+                                <span class="lot__cost"><?= strip_tags(format_price($lot['current_price']));?></span>
                             </div>
-                            <div class="lot__timer timer   <?=  strip_tags(timer($lot['timer'])['status']); ?>">
-                                <?=  strip_tags(timer($lot['timer'])['remaining_time']); ?>
+                            <div class="lot__timer timer   <?=  strip_tags(timer($lot['creation_date'])['status']); ?>">
+                                <?=  strip_tags(timer($lot['creation_date'])['remaining_time']); ?>
                             </div>
                         </div>
                     </div>
