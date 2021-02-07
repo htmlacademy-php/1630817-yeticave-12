@@ -6,18 +6,18 @@ VALUES ('Владик', 'vlad@gmail.com', '124', '870091u29312');
 INSERT INTO users (login, email, password, contacts)
 VALUES ('Виктор', 'Vitek@gmail.com', '125', '870091u29312');
 
-INSERT INTO categories (title)
-VALUES ('boards');
-INSERT INTO categories (title)
-VALUES ('attachment');
-INSERT INTO categories (title)
-VALUES ('boots');
-INSERT INTO categories (title)
-VALUES ('clothing');
-INSERT INTO categories (title)
-VALUES ('tools');
-INSERT INTO categories (title)
-VALUES ('other');
+INSERT INTO categories (title,translation)
+VALUES ('boards','Доски и лыжи');
+INSERT INTO categories (title,translation)
+VALUES ('attachment','Крепления');
+INSERT INTO categories (title,translation)
+VALUES ('boots','Ботинки');
+INSERT INTO categories (title,translation)
+VALUES ('clothing','Одежда');
+INSERT INTO categories (title,translation)
+VALUES ('tools','Инструменты');
+INSERT INTO categories (title,translation)
+VALUES ('other', 'Разное');
 
 INSERT INTO lots (author_id, title, category_id, first_price, image,end_date)
 VALUES (1, '2014 Rossignol District Snowboard', 1, 10999, 'img/lot-1.jpg', '2021-01-29 16:16');
