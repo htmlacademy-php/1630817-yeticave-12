@@ -18,7 +18,7 @@ CREATE TABLE users
 CREATE TABLE categories
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    title       VARCHAR(128),
+    title       VARCHAR(128) UNIQUE,
     translation VARCHAR(128)
 );
 
