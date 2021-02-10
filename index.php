@@ -3,15 +3,10 @@ require_once 'helpers.php';
 require_once 'config.php';
 require_once 'functions.php';
 require_once 'dbConfig.php';
+require_once 'sql_requests.php';
 
 $is_auth = rand(0, 1);
 
-$sql = 'SELECT  l.creation_date, b.lot_id, l.title ,l.first_price,l.image,b.bet_sum AS current_price, c.title as category FROM lots AS l  JOIN bets AS b ON b.lot_id = l.id JOIN categories AS c ON c.id = l.category_id WHERE b.bet_sum = (SELECT MAX(b.bet_sum) FROM bets AS b  WHERE b.lot_id = l.id) ORDER BY l.creation_date';
-$lots = sql_request($con,$sql);
-
-$sql = 'SELECT title,translation FROM categories';
-$categories = sql_request($con,$sql);
-
-$page_content = include_template('main.php', ['categories' => $categories, 'lots' =>$lots]);
-print (include_template('layout.php', ['categories' => $categories, 'is_auth' =>$is_auth, 'main_content' =>$page_content, 'user_name' => 'Mansur', 'title' => 'Главная']));
+$page_content = include_template('main.php', ['categories' => get_categories($con), 'lots' => get_lots($con) ]);
+print (include_template('layout.php', ['categories' => get_categories($con), 'is_auth' =>$is_auth, 'main_content' =>$page_content, 'user_name' => 'Mansur', 'title' => 'Главная']));
 

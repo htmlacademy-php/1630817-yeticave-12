@@ -56,9 +56,10 @@ function elapsed_time($data) {
         return seePlural($date->format('%d'), 'день', 'дня', 'дней');
     } elseif (1 <= $date->format('%h')) {
         return seePlural($date->format('%h'), 'час', 'часа', 'часов');
-    } else {
-        return seePlural($date->format('%i'), 'минута', 'минуты', 'минут');
     }
+
+    return seePlural($date->format('%i'), 'минута', 'минуты', 'минут');
+
 }
 
 /**
@@ -91,3 +92,5 @@ function sql_request($con,$sql,$data = []) {
     $res = mysqli_stmt_get_result($stmt);
     return  mysqli_fetch_all($res, MYSQLI_ASSOC);
 }
+
+
