@@ -1,7 +1,7 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <?php foreach ($categories  as $key => $category ): ?>
+            <?php foreach ($categories as $key => $category): ?>
                 <li class="nav__item">
                     <a href="all-lots.html"><?= strip_tags($category['translation']); ?></a>
                 </li>
@@ -13,15 +13,15 @@
         <div class="lot-item__content">
             <div class="lot-item__left">
                 <div class="lot-item__image">
-                    <img src=" <?=  strip_tags($lot['image']); ?>" width="730" height="548" alt="Сноуборд">
+                    <img src=" <?= strip_tags($lot['image']); ?>" width="730" height="548" alt="Сноуборд">
                 </div>
                 <p class="lot-item__category">Категория: <span><?= strip_tags($lot['category']); ?></span></p>
                 <p class="lot-item__description"><?= strip_tags($lot['description']); ?></p>
             </div>
             <div class="lot-item__right">
                 <div class="lot-item__state">
-                    <div class="lot-item__timer timer  <?=  strip_tags(timer($lot['creation_date'])['status']); ?>">
-                        <?=  strip_tags(timer($lot['creation_date'])['remaining_time']); ?>
+                    <div class="lot-item__timer timer  <?= timer($lot['end_date'])['status'] ? 'timer--finishing' : ''; ?>" style="width: inherit ">
+                        <?= timer($lot['end_date'])['remaining_time']; ?>
                     </div>
                     <div class="lot-item__cost-state">
                         <div class="lot-item__rate">
@@ -44,7 +44,7 @@
                 <div class="history">
                     <h3>История ставок (<span>10</span>)</h3>
                     <table class="history__list">
-                        <?php foreach ($bets as $bet ): ?>
+                        <?php foreach ($bets as $bet): ?>
                             <tr class="history__item">
                                 <td class="history__name"><?= strip_tags($bet['login']); ?></td>
                                 <td class="history__price"><?= strip_tags($bet['bet_sum']); ?></td>
