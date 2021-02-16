@@ -203,3 +203,42 @@ function save_photo($photo)
     $file_path = __DIR__.'/uploads/';
     move_uploaded_file($photo['tmp_name'], $file_path.$file_name);
 }
+
+
+/**
+ * Валидация email
+ * @param string $email
+ * @return string   ошибка полученная при валидации
+ *
+ */
+function email_validation($con,$email)
+{
+    if (! empty($email)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "Введите корректный email";
+        }
+        if (is_email_exist($con,$email)) {
+            return " Данный email уже используется";
+        }
+    }
+    else{
+        return "Поле не заполнено";
+    }
+
+    return null;
+}
+
+
+/**
+ * Валидация пароля
+ * @param string $password пароль
+ * @return string   ошибка полученная при валидации
+ *
+ */
+function password_validation($password, $password_from_db){
+    if (password_verify($password, $password_from_db)) {
+        return  null;
+    }else {
+        return " Неверный логин или пароль";
+    }
+}

@@ -5,8 +5,9 @@
  *
  * @return array массив категорий
  */
-function get_categories($con)
+function get_categories()
 {
+    global $con;
     $sql = 'SELECT title,translation FROM categories';
     $categories = sql_request($con, $sql);
     return $categories;
@@ -72,7 +73,7 @@ function get_lot_bets($con, $lot_id)
  * @param int $step ресурс шаг ставки
  * @param string $date ресурс дата окончания
  *
- * @return array массив ставок
+ * @return array результат
  */
 function insert_photo($con, $title, $category, $message, $name, $bet, $step, $date)
 {
@@ -97,8 +98,55 @@ function insert_photo($con, $title, $category, $message, $name, $bet, $step, $da
  * @param mysqli $con ресурс соединения
  * @param string $title название категории
 
- * @return int id категории
+ * @return array id категории
  */
 function get_category_id($con, $title){
    return sql_request($con, "SELECT id from categories WHERE translation = ?", [$title]);
+}
+
+/**
+ * Запрос к бд на проверку, есть ли пользователь с таким email
+ * @param mysqli $con ресурс соединения
+ * @param string $email название категории
+
+ * @return array id категории
+ */
+function is_email_exist($con, $email){
+    return sql_request($con, "SELECT id from users WHERE email = ?", [$email]);
+}
+
+
+/**
+ * Запрос к бд на добавление нового пользователя
+ * @param  mysqli $con ресурс соединения
+ * @param string $email почта
+ * @param string $login имя пользователя
+ * @param string $password пароль
+ * @param string $contact контактные данные
+ * @return array результат
+ */
+function insert_new_user($con, $email, $login, $password, $contact)
+{
+    $result = sql_insert($con,
+        'INSERT INTO users(email, login, password, contacts) VALUES ( ?, ?, ?, ?)',
+        [
+            $email,
+            $login,
+            $password,
+            $contact,
+        ]);
+    return $result;
+}
+
+/**
+ * Запрос к бд на получени пароля по email
+ * @param  mysqli $con ресурс соединения
+ * @param string $email почта
+ * @return array password
+ */
+function get_password_by_email($con, $email)
+{
+    $sql = 'SELECT password FROM users WHERE email = ?';
+    $password = sql_request($con, $sql, [$email]);
+    return $password;
 }
