@@ -5,7 +5,7 @@ require_once 'functions.php';
 require_once 'sql_requests.php';
 
 $is_auth = rand(0, 1);
-$categories = get_categories($con);
+$categories = get_categories();
 $errors = [];
 $result = 0;
 

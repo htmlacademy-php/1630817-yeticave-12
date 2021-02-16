@@ -5,7 +5,7 @@ require_once 'functions.php';
 require_once 'sql_requests.php';
 
 $is_auth = rand(0, 1);
-$categories = get_categories($con);
+$categories = get_categories();
 
 if ( ! empty($_GET['lot_id']) && is_numeric($_GET['lot_id'])) {
     $lot = get_lot_info($con, $_GET['lot_id']);

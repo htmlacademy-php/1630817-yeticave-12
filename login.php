@@ -6,17 +6,13 @@ require_once 'sql_requests.php';
 
 
 $is_auth = rand(0, 1);
-$categories = get_categories($con);
+$categories = get_categories();
+$errors = [];
 
 if (! empty($_POST)){
-    foreach ($_POST as $key => $field) {
-        if (empty($_POST[$key])) {
-            $errors[$key] = 'Поле не заполнено';
-        } else {
-            $errors[$key] = null;
-        }
-    }
+    $errors['email'] = login_email_validation($con,$_POST['email']);
     $password_from_db = get_password_by_email($con,$_POST['email']);
+    $password_from_db = !empty($password_from_db) ? $password_from_db : '';
     $errors['password'] = password_validation($_POST['password'],$password_from_db[0]['password']);
     if (empty(array_filter($errors))) {
         header("Location: ./index.php");
@@ -24,7 +20,7 @@ if (! empty($_POST)){
 }
 
 
-$page_content = include_template('login.php', ['categories' => $categories]);
+$page_content = include_template('login.php', ['categories' => $categories, 'errors' => $errors]);
 print (include_template('layout.php', [
     'categories' => $categories,
     'user_name' => 'Mansur',

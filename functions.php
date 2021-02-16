@@ -207,6 +207,7 @@ function save_photo($photo)
 
 /**
  * Валидация email
+ * @param mysqli $con подключение к бд
  * @param string $email
  * @return string   ошибка полученная при валидации
  *
@@ -236,9 +237,36 @@ function email_validation($con,$email)
  *
  */
 function password_validation($password, $password_from_db){
-    if (password_verify($password, $password_from_db)) {
-        return  null;
-    }else {
-        return " Неверный логин или пароль";
+    if(empty($password)){
+        return 'Поле не заполнено';
     }
+    if (!password_verify($password, $password_from_db)){
+        return "Неверный логин или пароль";
+    }
+    return  null;
+}
+
+/**
+ * Валидация email при входе на сайт
+ * @param mysqli $con подключение к бд
+ * @param string $email
+ *
+ * @return string   ошибка полученная при валидации
+ *
+ */
+function login_email_validation($con,$email)
+{
+    if (! empty($email)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "Введите корректный email";
+        }
+        if (!is_email_exist($con,$email)) {
+            return "Пользователь с таким email не зарегестрирован";
+        }
+    }
+    else{
+        return "Поле не заполнено";
+    }
+
+    return null;
 }

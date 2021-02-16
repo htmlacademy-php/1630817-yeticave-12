@@ -8,17 +8,17 @@
             <?php endforeach; ?>
         </ul>
     </nav>
-    <form action="../login.php" class="form container" method="post"> <!-- form--invalid -->
+    <form action="../login.php" class="form container <?= !empty(array_filter($errors)) ? 'form--invalid' : '' ?>" method="post"> <!-- form--invalid -->
         <h2>Вход</h2>
-        <div class="form__item"> <!-- form__item--invalid -->
+        <div class="form__item <?= !empty($errors['email']) ? 'form__item--invalid' : '' ?>"> <!-- form__item--invalid -->
             <label for="email">E-mail <sup>*</sup></label>
             <input id="email" name="email" placeholder="Введите e-mail" type="text">
-            <span class="form__error">Введите e-mail</span>
+            <span class="form__error"><?= !empty($errors['email']) ? $errors['email'] : '' ?></span>
         </div>
-        <div class="form__item form__item--last">
+        <div class="form__item form__item--last <?= !empty($errors['password']) ? 'form__item--invalid' : '' ?>">
             <label for="password">Пароль <sup>*</sup></label>
             <input id="password" name="password" placeholder="Введите пароль" type="password">
-            <span class="form__error">Введите пароль</span>
+            <span class="form__error"><?= !empty($errors['password']) ? $errors['password'] : '' ?></span>
         </div>
         <button class="button" type="submit">Войти</button>
     </form>

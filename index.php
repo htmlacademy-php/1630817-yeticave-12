@@ -5,7 +5,7 @@ require_once 'functions.php';
 require_once 'sql_requests.php';
 
 $is_auth = rand(0, 1);
-$categories = get_categories($con);
+$categories = get_categories();
 $lots = get_lots($con);
 
 $page_content = include_template('main.php', ['categories' => $categories, 'lots' => $lots]);
