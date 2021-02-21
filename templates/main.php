@@ -31,7 +31,7 @@
                                 <span class="lot__amount">Стартовая цена</span>
                                 <span class="lot__cost"><?= strip_tags(format_price($lot['current_price'])); ?></span>
                             </div>
-                            <div class="lot__timer timer   <?= timer($lot['end_date'])['status'] ? 'timer--finishing' : '' ; ?>">
+                            <div class="lot__timer timer   <?= timer($lot['end_date'])['status'] ? 'timer--finishing' : ''; ?>">
                                 <?= timer($lot['end_date'])['remaining_time']; ?>
                             </div>
                         </div>

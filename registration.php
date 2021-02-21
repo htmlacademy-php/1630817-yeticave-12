@@ -5,11 +5,11 @@ require_once 'functions.php';
 require_once 'sql_requests.php';
 
 $is_auth = rand(0, 1);
-$categories = get_categories();
+$categories = get_categories($con);
 $errors = [];
 $result = 0;
 
-if ( ! empty($_POST)) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $field) {
         if (empty($_POST[$key])) {
             $errors[$key] = 'Поле не заполнено';
@@ -17,14 +17,14 @@ if ( ! empty($_POST)) {
             $errors[$key] = null;
         }
     }
-    $errors['email'] = email_validation($con,$_POST['email']);
+    $errors['email'] = email_validation($con, $_POST['email']);
     if (empty(array_filter($errors))) {
-          $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-          $result = insert_new_user($con,$_POST['email'], $_POST['name'], $password, $_POST['message']);
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $result = insert_new_user($con, $_POST['email'], $_POST['name'], $password, $_POST['message']);
     }
 }
-if((int)$result === 1){
-    header(sprintf('Location: ../login.php' ));
+if ((int)$result === 1) {
+    header('Location: ./login.php');
     exit;
 }
 

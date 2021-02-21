@@ -7,9 +7,9 @@ require_once 'sql_requests.php';
 $is_auth = rand(0, 1);
 $errors = [];
 $result = 0;
-$categories = get_categories();
+$categories = get_categories($con);
 
-if ( ! empty($_POST)) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $field) {
         if (empty($_POST[$key])) {
             $errors[$key] = 'Поле не заполнено';
@@ -31,8 +31,8 @@ if ( ! empty($_POST)) {
 }
 
 if ((int)$result === 1) {
-    $url = "./lot.php?lot_id=".mysqli_insert_id($con);
-    header(sprintf("Location: %s", $url));
+    $url = './lot.php?lot_id='.mysqli_insert_id($con);
+    header('Location: '.$url);
     exit;
 }
 

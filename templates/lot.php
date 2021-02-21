@@ -20,7 +20,8 @@
             </div>
             <div class="lot-item__right">
                 <div class="lot-item__state">
-                    <div class="lot-item__timer timer  <?= timer($lot['end_date'])['status'] ? 'timer--finishing' : ''; ?>" style="width: inherit ">
+                    <div class="lot-item__timer timer  <?= timer($lot['end_date'])['status'] ? 'timer--finishing' : ''; ?>"
+                         style="width: inherit ">
                         <?= timer($lot['end_date'])['remaining_time']; ?>
                     </div>
                     <div class="lot-item__cost-state">
