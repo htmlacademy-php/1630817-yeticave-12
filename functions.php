@@ -24,7 +24,10 @@ function timer($date)
         return array('status' => true, 'remaining_time' => '00:00');
     }
     if ($diff->format("%d") >= 1) {
-        return array('status' => true, 'remaining_time' =>'До начала торгов еще ' . seePlural($diff -> format('%d'), 'день', 'дня', 'дней','')  );
+        return array(
+            'status' => true,
+            'remaining_time' => 'До начала торгов еще '.seePlural($diff->format('%d'), 'день', 'дня', 'дней', ''),
+        );
     }
     if ($diff->format("%H") < 1) {
         return array('status' => true, 'remaining_time' => $diff->format("%H:%I"));
@@ -96,6 +99,7 @@ function sql_request($con, $sql, $data = [])
     $stmt = db_get_prepare_stmt($con, $sql, $data);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
+
     return mysqli_fetch_all($res, MYSQLI_ASSOC);
 }
 
@@ -110,6 +114,7 @@ function sql_insert($con, $sql, $data = [])
 {
     $stmt = db_get_prepare_stmt($con, $sql, $data);
     $res = mysqli_stmt_execute($stmt);
+
     return $res;
 }
 
@@ -202,4 +207,67 @@ function save_photo($photo)
     $file_name = $photo['name'];
     $file_path = __DIR__.'/uploads/';
     move_uploaded_file($photo['tmp_name'], $file_path.$file_name);
+}
+
+
+/**
+ * Валидация email
+ * @param mysqli $con подключение к бд
+ * @param string $email
+ * @return string   ошибка полученная при валидации
+ */
+function email_validation($con, $email)
+{
+    if ( ! empty($email)) {
+        if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "Введите корректный email";
+        }
+        if (is_email_exist($con, $email)) {
+            return " Данный email уже используется";
+        }
+    } else {
+        return "Поле не заполнено";
+    }
+}
+
+
+/**
+ * Валидация пароля
+ * @param string $password пароль
+ * @param string $password_from_db пароль
+ * @return string   ошибка полученная при валидации
+ *
+ */
+function password_validation($password, $password_from_db)
+{
+    if (empty($password)) {
+        return 'Поле не заполнено';
+    }
+    if ( ! password_verify($password, $password_from_db[0]['password'])) {
+        return "Неверный логин или пароль";
+    }
+
+    return null;
+}
+
+/**
+ * Валидация email при входе на сайт
+ * @param mysqli $con подключение к бд
+ * @param string $email
+ * @return string   ошибка полученная при валидации
+ */
+function login_email_validation($con, $email)
+{
+    if ( ! empty($email)) {
+        if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "Введите корректный email";
+        }
+        if ( ! is_email_exist($con, $email)) {
+            return "Пользователь с таким email не зарегестрирован";
+        }
+
+        return null;
+    } else {
+        return "Поле не заполнено";
+    }
 }
