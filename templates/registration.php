@@ -8,7 +8,7 @@
             <?php endforeach; ?>
         </ul>
     </nav>
-    <form action="../registration.php" autocomplete="off"
+    <form action="./registration.php" autocomplete="off"
           class="form container <?= ! empty(array_filter($errors)) ? 'form--invalid' : '' ?> "
           method="post">
         <h2>Регистрация нового аккаунта</h2>

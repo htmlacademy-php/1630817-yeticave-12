@@ -8,7 +8,7 @@
             <?php endforeach; ?>
         </ul>
     </nav>
-    <form action="../login.php" class="form container <?= ! empty(array_filter($errors)) ? 'form--invalid' : '' ?>"
+    <form action="./login.php" class="form container <?= ! empty(array_filter($errors)) ? 'form--invalid' : '' ?>"
           method="post">
         <h2>Вход</h2>
         <div class="form__item <?= ! empty($errors['email']) ? 'form__item--invalid' : '' ?>">

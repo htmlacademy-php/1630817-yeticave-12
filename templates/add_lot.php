@@ -8,7 +8,7 @@
             <?php endforeach; ?>
         </ul>
     </nav>
-    <form class="form form--add-lot container form--invalid" action="../add.php" enctype="multipart/form-data"
+    <form class="form form--add-lot container form--invalid" action="./add.php" enctype="multipart/form-data"
           method="post">
         <h2>Добавление лота</h2>
         <div class="form__container-two">
