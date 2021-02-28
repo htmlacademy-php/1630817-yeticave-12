@@ -71,14 +71,15 @@ function get_lot_bets($con, $lot_id)
  * @param string $title название лота
  * @param string $category категория
  * @param string $message описание
- * @param string $name ресурс имя фотографии
- * @param int $bet ресурс начальная ставка
- * @param int $step ресурс шаг ставки
- * @param string $date ресурс дата окончания
+ * @param string $name имя фотографии
+ * @param int $bet начальная ставка
+ * @param int $step  шаг ставки
+ * @param int $author_id  id автора поста
+ * @param array $date дата окончания
  *
- * @return array результат
+ * @return bool результат
  */
-function insert_photo($con, $title, $category, $message, $name, $bet, $step, $date)
+function insert_photo($con, $title, $category, $message, $name, $bet, $step, $date,$author_id)
 {
     $result = sql_insert($con,
         'INSERT INTO lots(title,category_id,description, image,first_price,end_date,bet_step,author_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -90,7 +91,7 @@ function insert_photo($con, $title, $category, $message, $name, $bet, $step, $da
             $bet,
             $date,
             $step,
-            1,
+            $author_id,
         ]);
 
     return $result;
@@ -155,3 +156,17 @@ function get_password_by_email($con, $email)
     $password = sql_request($con, $sql, [$email]);
     return $password;
 }
+
+/**
+ * Запрос к бд на получени пароля по email
+ * @param mysqli $con ресурс соединения
+ * @param string $email почта
+ * @return array данные пользователя
+ */
+function get_user_info($con, $email)
+{
+    $sql = 'SELECT id, login  FROM users WHERE email = ?';
+    $user_info = sql_request($con, $sql, [$email]);
+    return $user_info;
+}
+

@@ -1,10 +1,11 @@
 <?php
+session_start();
 require_once 'helpers.php';
 require_once 'config.php';
 require_once 'functions.php';
 require_once 'sql_requests.php';
 
-$is_auth = rand(0, 1);
+$is_auth =  isset($_SESSION['id']) ?? 0;
 $categories = get_categories($con);
 $errors = [];
 $result = 0;
@@ -31,7 +32,7 @@ if ((int)$result === 1) {
 $page_content = include_template('registration.php', ['categories' => $categories, 'errors' => $errors]);
 print (include_template('layout.php', [
     'categories' => $categories,
-    'user_name' => 'Mansur',
+    'user_name' => isset($_SESSION['login']) ? $_SESSION['login'] : '',
     'is_auth' => $is_auth,
     'title' => 'Лот',
     'main_content' => $page_content,

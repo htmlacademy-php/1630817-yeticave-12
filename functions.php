@@ -223,11 +223,11 @@ function email_validation($con, $email)
             return "Введите корректный email";
         }
         if (is_email_exist($con, $email)) {
-            return " Данный email уже используется";
+            return "Данный email уже используется";
         }
-    } else {
-        return "Поле не заполнено";
     }
+
+    return "Поле не заполнено";
 }
 
 
@@ -267,7 +267,8 @@ function login_email_validation($con, $email)
         }
 
         return null;
-    } else {
-        return "Поле не заполнено";
     }
+
+    return "Поле не заполнено";
 }
+
