@@ -4,6 +4,9 @@ require_once 'config.php';
 require_once 'functions.php';
 require_once 'sql_requests.php';
 
+if ($is_auth){
+    header("Location: ./index.php");
+}
 
 $categories = get_categories($con);
 $errors = [];
