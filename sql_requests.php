@@ -79,7 +79,7 @@ function get_lot_bets($con, $lot_id)
  *
  * @return bool результат
  */
-function insert_photo($con, $title, $category, $message, $name, $bet, $step, $date,$author_id)
+function insert_photo($con, $title, $category, $message, $name, $bet, $step, $date, $author_id)
 {
     $result = sql_insert($con,
         'INSERT INTO lots(title,category_id,description, image,first_price,end_date,bet_step,author_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -170,3 +170,30 @@ function get_user_info($con, $email)
     return $user_info;
 }
 
+/**
+ * Запрос на поиск лотов из бд
+ * @param mysqli $con ресурс соединения
+ * @param string $search поисковый запрос
+ * @param int $offset пагинация
+ * @param int  $limit количество
+ * @return array лоты
+ */
+function get_lots_by_search($con, $search, $offset, $limit)
+{
+    $sql = 'SELECT * FROM  lots WHERE MATCH(description,title) AGAINST(?) LIMIT ? OFFSET ?';
+    $lots = sql_request($con, $sql, [$search, $limit, $offset]);
+    return $lots;
+}
+
+/**
+ * Запрос на поиск лотов из бд
+ * @param mysqli $con ресурс соединения
+ * @param string $search поисковый запрос
+ * @return array лоты
+ */
+function get_lots_count_by_search($con, $search)
+{
+    $sql = 'SELECT COUNT(id) as count  FROM  lots WHERE MATCH(description,title) AGAINST(?)';
+    $count = sql_request($con, $sql, [$search]);
+    return $count[0]['count'];
+}

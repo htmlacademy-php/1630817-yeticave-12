@@ -225,6 +225,8 @@ function email_validation($con, $email)
         if (is_email_exist($con, $email)) {
             return "Данный email уже используется";
         }
+
+        return null;
     }
 
     return "Поле не заполнено";
