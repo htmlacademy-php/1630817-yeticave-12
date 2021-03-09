@@ -59,3 +59,4 @@ CREATE INDEX u_mail ON users (email);
 CREATE INDEX u_login ON users (login);
 CREATE INDEX lots_title ON lots (title);
 CREATE INDEX lots_description ON lots (description);
+CREATE FULLTEXT INDEX lots_search ON lots (title, description);

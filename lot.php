@@ -1,11 +1,9 @@
 <?php
-session_start();
 require_once 'helpers.php';
 require_once 'config.php';
 require_once 'functions.php';
 require_once 'sql_requests.php';
 
-$is_auth = isset($_SESSION['id']) ?? 0;
 $categories = get_categories($con);
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && (isset($_GET['lot_id']) ? is_numeric($_GET['lot_id'] ) : false)) {
     $lot = get_lot_info($con, $_GET['lot_id']);
