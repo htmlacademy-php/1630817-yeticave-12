@@ -52,6 +52,6 @@ if ($is_auth) {
         'user_name' => isset($_SESSION['login']) ? $_SESSION['login'] : '',
         'is_auth' => $is_auth,
         'title' => 'Ошибка 403',
-        'main_content' => include_template('403.php', ['categories' => $categories]),
+        'main_content' => include_template('403.php', ['categories' => $categories, 'message' => 'Добавление лота доступно только зарегестрированным пользователям.']),
     ]));
 }

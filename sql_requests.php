@@ -197,3 +197,44 @@ function get_lots_count_by_search($con, $search)
     $count = sql_request($con, $sql, [$search]);
     return $count[0]['count'];
 }
+
+/**
+ * Запрос на добавление ставки
+ * @param mysqli $con ресурс соединения
+ * @param string $sum сумма ставки
+ * @param string $lot_id  id лота
+ * @param string $author_id  автор ставки
+ * @return array лоты
+ */
+function insert_new_bet( $con, int $sum, int  $lot_id, int $author_id)
+{
+    $sql = 'INSERT INTO bets(bet_sum, bet_author, lot_id ) VALUES (?, ?, ?)';
+    $result = sql_insert($con, $sql, [$sum, $author_id, $lot_id]);
+    return $result;
+}
+
+/**
+ * Запрос на получение ставки по id
+ * @param mysqli $con ресурс соединения
+ * @param int $id  id ставки
+ * @return array ставку
+ */
+function get_bet_by_id($con, $id)
+{
+    $sql = 'SELECT b.*,users.login FROM bets AS b JOIN users ON users.id = b.bet_author  WHERE b.id = ? ';
+    $bet = sql_request($con, $sql, [$id]);
+    return $bet;
+}
+
+/**
+ * Запрос на добавление ставки
+ * @param mysqli $con ресурс соединения
+ * @param int $my_id мой id
+ * @return array мои ставки
+ */
+function get_my_bets($con, $my_id)
+{
+    $sql = 'SELECT b.*, l.title, l.end_date, l.image, c.translation as category FROM bets AS b JOIN lots as l ON l.id = b.lot_id JOIN categories as c ON c.id = l.category_id  WHERE b.bet_author = ? ORDER BY b.creation_date DESC';
+    $my_bets = sql_request($con, $sql, [$my_id]);
+    return $my_bets;
+}

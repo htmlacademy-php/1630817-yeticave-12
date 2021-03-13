@@ -40,13 +40,15 @@
                 <h3> По заданному запросу ничего не найдено </h3>
             <?php  endif; ?>
         </section>
-        <ul class="pagination-list">
-            <li class="pagination-item pagination-item-prev"><a <a href="./search.php?search=<?= strip_tags($search) ?>&page=<?= $page > 1  ? strip_tags($page - 1) : strip_tags($page)  ?> " >Назад</a></li>
-            <?php for ($i = 0; $i < $page_count; $i++ ):?>
-            <li class="pagination-item pagination-item-active"><a href="./search.php?search=<?= strip_tags($search) ?>&page=<?= $i+1 ?> "><?= $i+1 ?></a></li>
-            <?php endfor; ?>
-            <li class="pagination-item pagination-item-next"><a <a href="./search.php?search=<?= strip_tags($search) ?>&page=<?= $page < $page_count ? strip_tags($page + 1) : strip_tags($page) ?>">Вперед</a></li>
-        </ul>
+        <?php if ($page_count > 1 ): ?>
+            <ul class="pagination-list">
+                <li class="pagination-item pagination-item-prev"><a <a href="./search.php?search=<?= strip_tags($search) ?>&page=<?= $page > 1  ? strip_tags($page - 1) : strip_tags($page)  ?> " >Назад</a></li>
+                <?php for ($i = 0; $i < $page_count; $i++ ):?>
+                <li class="pagination-item pagination-item-active"><a href="./search.php?search=<?= strip_tags($search) ?>&page=<?= $i+1 ?> "><?= $i+1 ?></a></li>
+                <?php endfor; ?>
+                <li class="pagination-item pagination-item-next"><a <a href="./search.php?search=<?= strip_tags($search) ?>&page=<?= $page < $page_count ? strip_tags($page + 1) : strip_tags($page) ?>">Вперед</a></li>
+            </ul>
+        <?php endif; ?>
     </div>
 </main>
 

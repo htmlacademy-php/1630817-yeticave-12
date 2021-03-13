@@ -270,6 +270,26 @@ function login_email_validation($con, $email)
 
         return null;
     }
+}
+
+/**
+ * Валидация email при входе на сайт
+ * @param string $cost введенная цена
+ * @param string $min_cost минимальная сумма ввода
+ * @return string   ошибка полученная при валидации
+ */
+function validate_cost($cost, $min_cost)
+{
+    if ( ! empty($cost)) {
+        if ( ! is_numeric($cost)) {
+            return "Введите корректную цену";
+        }
+        if ((int)$cost < (int)$min_cost) {
+            return 'Введите сумму больше минимальной ставки';
+        }
+
+        return null;
+    }
 
     return "Поле не заполнено";
 }
