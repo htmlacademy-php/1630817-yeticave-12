@@ -27,8 +27,10 @@ function get_lots($con)
         if ($lot['current_price'] === null) {
             $lot['current_price'] = $lot['first_price'];
         }
-        if ((date_diff(new DateTime($lot['end_date']),
-                    new DateTime())->days >= 1) || new DateTime($lot['end_date']) < new DateTime()) {
+        if ((date_diff(
+            new DateTime($lot['end_date']),
+            new DateTime()
+        )->days >= 1) || new DateTime($lot['end_date']) < new DateTime()) {
             unset($lots[$key]);
         }
     }
@@ -45,7 +47,7 @@ function get_lots($con)
 function get_lot_info($con, $lot_id)
 {
     $sql = 'SELECT  l.*, b.bet_sum AS current_price, c.translation as category FROM lots AS l LEFT JOIN bets AS b ON b.lot_id = l.id  AND b.bet_sum = (SELECT MAX(b.bet_sum) FROM bets AS b  WHERE b.lot_id = l.id) LEFT JOIN categories AS c ON c.id = l.category_id WHERE l.id = ? ORDER BY  b.bet_sum  DESC;';
-    $lot = sql_request($con, $sql, [$lot_id]);
+    $lot = sql_request($con, $sql, [$lot_id], true);
 
     return $lot;
 }
@@ -81,7 +83,8 @@ function get_lot_bets($con, $lot_id)
  */
 function insert_photo($con, $title, $category, $message, $name, $bet, $step, $date, $author_id)
 {
-    $result = sql_insert($con,
+    $result = sql_insert(
+        $con,
         'INSERT INTO lots(title,category_id,description, image,first_price,end_date,bet_step,author_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)',
         [
             $title,
@@ -92,7 +95,8 @@ function insert_photo($con, $title, $category, $message, $name, $bet, $step, $da
             $date,
             $step,
             $author_id,
-        ]);
+        ]
+    );
 
     return $result;
 }
@@ -132,14 +136,16 @@ function is_email_exist($con, $email)
  */
 function insert_new_user($con, $email, $login, $password, $contact)
 {
-    $result = sql_insert($con,
+    $result = sql_insert(
+        $con,
         'INSERT INTO users(email, login, password, contacts) VALUES ( ?, ?, ?, ?)',
         [
             $email,
             $login,
             $password,
             $contact,
-        ]);
+        ]
+    );
 
     return $result;
 }
@@ -206,7 +212,7 @@ function get_lots_count_by_search($con, $search)
  * @param string $author_id  автор ставки
  * @return array лоты
  */
-function insert_new_bet( $con, int $sum, int  $lot_id, int $author_id)
+function insert_new_bet($con, int $sum, int  $lot_id, int $author_id)
 {
     $sql = 'INSERT INTO bets(bet_sum, bet_author, lot_id ) VALUES (?, ?, ?)';
     $result = sql_insert($con, $sql, [$sum, $author_id, $lot_id]);
@@ -238,3 +244,30 @@ function get_my_bets($con, $my_id)
     $my_bets = sql_request($con, $sql, [$my_id]);
     return $my_bets;
 }
+
+///**
+// * Запрос получение лотов закончилось время, но нет без победителя
+// * @param mysqli $con ресурс соединения
+// * @return array список
+// */
+//function get_lots_without_winners($con)
+//{
+//    $sql = 'SELECT l.id, max(b.id) as max_bet_id from lots as l  join bets as b on b.lot_id = l.id   where winner_id is null AND end_date < CURRENT_TIMESTAMP()  group by l.id //
+//    $lots = sql_request($con, $sql)';
+//    return $lots;
+//}
+
+
+///**
+// * Запрос получение лотов закончилось время, но нет без победителя
+// * @param mysqli $con ресурс соединения
+// * @param mysqli $winner_id победитель торгов
+// * @param mysqli $lot_id выигранный лот
+// * @return bool результат выполнения
+// */
+//function set_lot_winner($con, а, $lot_id)
+//{
+//    $sql = 'UPDATE lots SET winner_id = ? WHERE id = ? ';
+//    $update = sql_request($con, $sql, [$winner_id, $lot_id]);
+//    return $update;
+//}

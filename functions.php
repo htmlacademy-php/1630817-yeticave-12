@@ -69,7 +69,6 @@ function elapsed_time($data)
     }
 
     return seePlural($date->format('%i'), 'минута', 'минуты', 'минут');
-
 }
 
 /**
@@ -94,13 +93,17 @@ function seePlural($str, $one, $two, $many, $ending = ' назад')
  * @param array $data массив с данными для вставки в sql
  * @return array массив данных из бд
  */
-function sql_request($con, $sql, $data = [])
+function sql_request($con, $sql, $data = [], $one_elem = false)
 {
     $stmt = db_get_prepare_stmt($con, $sql, $data);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
-
-    return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    if ($one_elem) {
+        $res = mysqli_fetch_assoc($res);
+    } else {
+        $res = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $res;
 }
 
 /**
@@ -126,7 +129,7 @@ function sql_insert($con, $sql, $data = [])
 
 function first_price_validation($price)
 {
-    if ( ! empty($price)) {
+    if (! empty($price)) {
         if ($price < 0) {
             return "Некорректная начальная цена";
         }
@@ -144,11 +147,11 @@ function first_price_validation($price)
  */
 function date_validation($date)
 {
-    if ( ! empty($date)) {
-        if ( ! (new DateTime($date) > new DateTime())) {
+    if (! empty($date)) {
+        if (! (new DateTime($date) > new DateTime())) {
             return "Дата заверешния должна быть больше текущей даты";
         }
-        if ( ! is_date_valid($date)) {
+        if (! is_date_valid($date)) {
             return "Неверный формат даты";
         }
     } else {
@@ -165,8 +168,8 @@ function date_validation($date)
  */
 function bet_step_validation($step)
 {
-    if ( ! empty($step)) {
-        if ( ! (is_numeric($step) && $step > 0)) {
+    if (! empty($step)) {
+        if (! (is_numeric($step) && $step > 0)) {
             return "Неверный шаг ставки";
         }
     } else {
@@ -183,11 +186,11 @@ function bet_step_validation($step)
  */
 function photo_validation($photo)
 {
-    if ( ! empty($photo['name'])) {
+    if (! empty($photo['name'])) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $photo['tmp_name']);
         $extension = array("image/jpg", "image/png", "image/jpeg");
-        if ( ! in_array($file_type, $extension)) {
+        if (! in_array($file_type, $extension)) {
             return 'Неверный формат';
         }
     } else {
@@ -218,8 +221,8 @@ function save_photo($photo)
  */
 function email_validation($con, $email)
 {
-    if ( ! empty($email)) {
-        if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (! empty($email)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "Введите корректный email";
         }
         if (is_email_exist($con, $email)) {
@@ -245,7 +248,7 @@ function password_validation($password, $password_from_db)
     if (empty($password)) {
         return 'Поле не заполнено';
     }
-    if ( ! password_verify($password, $password_from_db[0]['password'])) {
+    if (! password_verify($password, $password_from_db[0]['password'])) {
         return "Неверный логин или пароль";
     }
 
@@ -260,11 +263,11 @@ function password_validation($password, $password_from_db)
  */
 function login_email_validation($con, $email)
 {
-    if ( ! empty($email)) {
-        if ( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (! empty($email)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "Введите корректный email";
         }
-        if ( ! is_email_exist($con, $email)) {
+        if (! is_email_exist($con, $email)) {
             return "Пользователь с таким email не зарегестрирован";
         }
 
@@ -280,8 +283,8 @@ function login_email_validation($con, $email)
  */
 function validate_cost($cost, $min_cost)
 {
-    if ( ! empty($cost)) {
-        if ( ! is_numeric($cost)) {
+    if (! empty($cost)) {
+        if (! is_numeric($cost)) {
             return "Введите корректную цену";
         }
         if ((int)$cost < (int)$min_cost) {
@@ -294,3 +297,18 @@ function validate_cost($cost, $min_cost)
     return "Поле не заполнено";
 }
 
+///**
+// * Редирект с отправкой данных
+// * @param array $data данные
+// */
+//
+//function redirect_post( array $data)
+//{
+//    $params = array(
+//        'http' => array(
+//            'method' => 'POST',
+//            'content' => http_build_query($data)
+//        )
+//    );
+//    stream_context_create($params);
+//}

@@ -135,7 +135,7 @@ function include_template($name, array $data = [])
     $name = 'templates/'.$name;
     $result = '';
 
-    if ( ! is_readable($name)) {
+    if (! is_readable($name)) {
         return $result;
     }
 
@@ -147,5 +147,3 @@ function include_template($name, array $data = [])
 
     return $result;
 }
-
-

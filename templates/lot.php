@@ -1,7 +1,7 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <?php foreach ($categories as $key => $category): ?>
+            <?php foreach ($categories as $category) : ?>
                 <li class="nav__item">
                     <a href="all-lots.html"><?= strip_tags($category['translation']); ?></a>
                 </li>
@@ -37,8 +37,9 @@
                         <form class="lot-item__form" action="./lot.php?lot_id=<?= $lot['id'] ?>" method="post" autocomplete="off">
                             <p class="lot-item__form-item form__item <?= array_filter($errors) ? 'form__item--invalid': '' ?>">
                                 <label for="cost">Ваша ставка</label>
-                                <input id="cost" type="text" name="cost" placeholder="12 000">
-                                <?php if( array_filter($errors)): ?>
+                                <input id="cost" type="text" name="cost" >
+                                <input type="hidden" id="lot_id" name="lot_id" value="<?= $lot['id'] ?>">
+                                <?php if (array_filter($errors)) : ?>
                                     <span class="form__error"><?= $errors['cost'] ?></span>
                                 <?php endif; ?>
                             </p>
@@ -49,7 +50,7 @@
                 <div class="history">
                     <h3>История ставок (<span><?= $bets_count ?></span>)</h3>
                     <table class="history__list">
-                        <?php foreach ($bets as $bet): ?>
+                        <?php foreach ($bets as $bet) : ?>
                             <tr class="history__item">
                                 <td class="history__name"><?= strip_tags($bet['login']); ?></td>
                                 <td class="history__price"><?= strip_tags($bet['bet_sum']); ?></td>
