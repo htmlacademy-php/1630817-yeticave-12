@@ -1,7 +1,7 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <?php foreach ($categories as $key => $category): ?>
+            <?php foreach ($categories as $category) : ?>
                 <li class="nav__item">
                     <a href="all-lots.html"><?= strip_tags($category['translation']); ?></a>
                 </li>

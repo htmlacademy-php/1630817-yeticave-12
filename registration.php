@@ -30,7 +30,7 @@ if ((int)$result === 1) {
 $page_content = include_template('registration.php', ['categories' => $categories, 'errors' => $errors]);
 print (include_template('layout.php', [
     'categories' => $categories,
-    'user_name' => isset($_SESSION['login']) ? $_SESSION['login'] : '',
+    'user_name' => $user_name,
     'is_auth' => $is_auth,
     'title' => 'Лот',
     'main_content' => $page_content,

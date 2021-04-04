@@ -25,8 +25,17 @@ if ($is_auth) {
         if (empty(array_filter($errors))) {
             save_photo($_FILES['lot_img']);
             $category_id = get_category_id($con, $_POST['category']);
-            $result = insert_photo($con, $_POST['lot-name'], $category_id[0]['id'], $_POST['message'],
-                '../uploads/'.$_FILES['lot_img']['name'], $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_SESSION['id']);
+            $result = insert_photo(
+                $con,
+                $_POST['lot-name'],
+                $category_id[0]['id'],
+                $_POST['message'],
+                '../uploads/'.$_FILES['lot_img']['name'],
+                $_POST['lot-rate'],
+                $_POST['lot-step'],
+                $_POST['lot-date'],
+                $_SESSION['id']
+            );
         }
     }
 
@@ -40,7 +49,7 @@ if ($is_auth) {
     $page_content = include_template('add_lot.php', ['categories' => $categories, 'errors' => $errors]);
     print (include_template('layout.php', [
         'categories' => $categories,
-        'user_name' => isset($_SESSION['login']) ? $_SESSION['login'] : '',
+        'user_name' => $user_name,
         'is_auth' => $is_auth,
         'title' => 'Добавить лот',
         'main_content' => $page_content,
@@ -49,9 +58,9 @@ if ($is_auth) {
     http_response_code(403);
     print (include_template('layout.php', [
         'categories' => $categories,
-        'user_name' => isset($_SESSION['login']) ? $_SESSION['login'] : '',
+        'user_name' => $user_name,
         'is_auth' => $is_auth,
         'title' => 'Ошибка 403',
-        'main_content' => include_template('403.php', ['categories' => $categories]),
+        'main_content' => include_template('403.php', ['categories' => $categories, 'message' => 'Добавление лота доступно только зарегестрированным пользователям.']),
     ]));
 }

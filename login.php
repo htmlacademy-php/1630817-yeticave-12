@@ -4,7 +4,7 @@ require_once 'config.php';
 require_once 'functions.php';
 require_once 'sql_requests.php';
 
-if ($is_auth){
+if ($is_auth) {
     header("Location: ./index.php");
 }
 
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password_from_db = get_password_by_email($con, $_POST['email']);
     $errors['password'] = password_validation($_POST['password'], $password_from_db);
     if (empty(array_filter($errors))) {
-        $user_info  =  get_user_info($con,$_POST['email'])[0];
+        $user_info  =  get_user_info($con, $_POST['email'])[0];
         $_SESSION['id'] = $user_info['id'];
         $_SESSION['login'] = $user_info['login'];
         header("Location: ./index.php");
