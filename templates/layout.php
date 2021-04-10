@@ -43,9 +43,33 @@
             </nav>
         </div>
     </header>
-
-    <?= $main_content ?>
-
+    <main>
+        <?php if (isset($welcome_page)) : ?>
+            <section class="promo container">
+                <h2 class="promo__title">Нужен стафф для катки?</h2>
+                <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное
+                    снаряжение.</p>
+                <ul class="promo__list">
+                    <?php foreach ($categories as $category) : ?>
+                        <li class="promo__item promo__item--<?= strip_tags($category['title']); ?>">
+                            <a class="promo__link" href="./sorted_lots.php?category_id=<?= $category['id']; ?>"><?= strip_tags($category['translation']); ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </section>
+        <?php else : ?>
+            <nav class="nav">
+                <ul class="nav__list container">
+                    <?php foreach ($categories as $category) : ?>
+                        <li class="nav__item">
+                            <a href="./sorted_lots.php?category_id=<?= $category['id']; ?>"><?= strip_tags($category['translation']); ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
+        <?= $main_content ?>
+    </main>
 </div>
 
 <footer class="main-footer">
@@ -53,7 +77,7 @@
         <ul class="nav__list container">
             <?php foreach ($categories as $category) : ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= strip_tags($category['translation']); ?></a>
+                    <a href="./sorted_lots.php?category_id=<?= $category['id']; ?>"><?= strip_tags($category['translation']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -101,7 +125,7 @@
                 </svg>
             </a>
         </div>
-        <a class="main-footer__add-lot button" href="add-lot.html">Добавить лот</a>
+        <a class="main-footer__add-lot button" href="#">Добавить лот</a>
         <div class="main-footer__developed-by">
             <span class="visually-hidden">Разработано:</span>
             <a class="logo-academy" href="https://htmlacademy.ru/intensive/php">

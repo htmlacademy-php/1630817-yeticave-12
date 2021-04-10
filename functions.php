@@ -297,18 +297,3 @@ function validate_cost($cost, $min_cost)
     return "Поле не заполнено";
 }
 
-///**
-// * Редирект с отправкой данных
-// * @param array $data данные
-// */
-//
-//function redirect_post( array $data)
-//{
-//    $params = array(
-//        'http' => array(
-//            'method' => 'POST',
-//            'content' => http_build_query($data)
-//        )
-//    );
-//    stream_context_create($params);
-//}

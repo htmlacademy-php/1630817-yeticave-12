@@ -27,7 +27,7 @@ if ((int)$result === 1) {
     exit;
 }
 
-$page_content = include_template('registration.php', ['categories' => $categories, 'errors' => $errors]);
+$page_content = include_template('registration.php', ['errors' => $errors]);
 print (include_template('layout.php', [
     'categories' => $categories,
     'user_name' => $user_name,

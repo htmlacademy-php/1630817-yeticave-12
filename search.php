@@ -14,7 +14,6 @@ $lots = get_lots_by_search($con, $search, $offset, $limit);
 $page_count = ceil((int)$lots_count / $limit);
 
 $page_content = include_template('search.php', [
-    'categories' => $categories,
     'lots' => $lots,
     'page' => $page,
     'search' => $search,

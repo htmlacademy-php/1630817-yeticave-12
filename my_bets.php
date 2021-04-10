@@ -8,7 +8,6 @@ $categories = get_categories($con);
 if ($is_auth) {
     $my_bets = get_my_bets($con, $_SESSION['id']);
     $page_content = include_template('my_bets.php', [
-        'categories' => $categories,
         'my_bets' => $my_bets
     ]);
     print (include_template('layout.php', [

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 
-$page_content = include_template('login.php', ['categories' => $categories, 'errors' => $errors]);
+$page_content = include_template('login.php', ['errors' => $errors]);
 print (include_template('layout.php', [
     'categories' => $categories,
     'user_name' => '',
