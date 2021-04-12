@@ -1,0 +1,14 @@
+{
+    "name": "yeticave/auction",
+    "description": "winter equipment auction",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Mansur Taktashev",
+            "email": "taktashev.m@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}

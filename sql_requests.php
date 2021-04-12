@@ -7,7 +7,7 @@
  */
 function get_categories($con)
 {
-    $sql = 'SELECT title,translation FROM categories';
+    $sql = 'SELECT title,translation,id FROM categories';
     $categories = sql_request($con, $sql);
 
     return $categories;
@@ -171,7 +171,7 @@ function get_password_by_email($con, $email)
  */
 function get_user_info($con, $email)
 {
-    $sql = 'SELECT id, login  FROM users WHERE email = ?';
+    $sql = 'SELECT *  FROM users WHERE email = ?';
     $user_info = sql_request($con, $sql, [$email]);
     return $user_info;
 }
@@ -245,29 +245,81 @@ function get_my_bets($con, $my_id)
     return $my_bets;
 }
 
-///**
-// * Запрос получение лотов закончилось время, но нет без победителя
-// * @param mysqli $con ресурс соединения
-// * @return array список
-// */
-//function get_lots_without_winners($con)
-//{
-//    $sql = 'SELECT l.id, max(b.id) as max_bet_id from lots as l  join bets as b on b.lot_id = l.id   where winner_id is null AND end_date < CURRENT_TIMESTAMP()  group by l.id //
-//    $lots = sql_request($con, $sql)';
-//    return $lots;
-//}
+/**
+ * Запрос получение лотов закончилось время, но нет без победителя
+ * @param mysqli $con ресурс соединения
+ * @return array список
+ */
+function get_lots_without_winners($con)
+{
+    $sql = 'SELECT l.id, l.title, max(b.id) as max_bet_id from lots as l  join bets as b on b.lot_id = l.id   where winner_id is null AND end_date < CURRENT_TIMESTAMP()  group by l.id';
+    $lots = sql_request($con, $sql);
+    return $lots;
+}
 
 
-///**
-// * Запрос получение лотов закончилось время, но нет без победителя
-// * @param mysqli $con ресурс соединения
-// * @param mysqli $winner_id победитель торгов
-// * @param mysqli $lot_id выигранный лот
-// * @return bool результат выполнения
-// */
-//function set_lot_winner($con, а, $lot_id)
-//{
-//    $sql = 'UPDATE lots SET winner_id = ? WHERE id = ? ';
-//    $update = sql_request($con, $sql, [$winner_id, $lot_id]);
-//    return $update;
-//}
+/**
+ * Запрос получение лотов закончилось время, но нет без победителя
+ * @param mysqli $con ресурс соединения
+ * @param mysqli $winner_id победитель торгов
+ * @param mysqli $lot_id выигранный лот
+ * @return bool результат выполнения
+ */
+function set_lot_winner($con, $winner_id, $lot_id)
+{
+    $sql = 'UPDATE lots SET winner_id = ? WHERE id = ? ';
+    $update = sql_insert($con, $sql, [$winner_id, $lot_id]);
+    return $update;
+}
+
+/**
+ * Запрос на получение информации о пользователе по id
+ * @param mysqli $con ресурс соединения
+ * @param mysqli $id пользователя
+ * @return array информация о пользователе
+ */
+function select_user_info_by_id($con, $id)
+{
+    $sql = 'SELECT *  from users WHERE id = ? ';
+    $info = sql_request($con, $sql, [$id]);
+    return $info[0];
+}
+
+/**
+ * Запрос на получение лотов по id  категории
+ * @param mysqli $con ресурс соединения
+ * @param mysqli $category_id категория поста
+ * @return array массив постов
+ */
+function get_lots_by_category($con, $category_id, $limit, $offset)
+{
+    $sql = 'SELECT *  from lots WHERE category_id = ? LIMIT ? OFFSET ?';
+    $lots = sql_request($con, $sql, [$category_id, $limit, $offset]);
+    return $lots;
+}
+
+/**
+ * Запрос на получение информации о пользователе по id
+ * @param mysqli $con ресурс соединения
+ * @param mysqli $category_id категория поста
+ * @return int кол-во постов
+ */
+function get_lots_count_sorted_by_category($con, $category_id)
+{
+    $sql = 'SELECT count(id) as count from lots WHERE category_id = ? ';
+    $lots = sql_request($con, $sql, [$category_id]);
+    return $lots[0]['count'];
+}
+
+/**
+ * Запрос на получение названия категории по id
+ * @param mysqli $con ресурс соединения
+ * @param mysqli $category_id категория поста
+ * @return string название
+ */
+function get_category_translation($con, $category_id)
+{
+    $sql = 'SELECT translation from categories WHERE id = ? ';
+    $category_name = sql_request($con, $sql, [$category_id]);
+    return $category_name[0]['translation'];
+}
