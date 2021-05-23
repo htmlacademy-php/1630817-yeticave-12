@@ -21,16 +21,13 @@ function get_categories($con)
  */
 function get_lots($con)
 {
-    $sql = 'SELECT  l.end_date,l.creation_date, l.id as lot_id, l.title ,l.first_price,l.image,b.bet_sum AS current_price, c.title as category FROM lots AS l LEFT JOIN bets AS b ON b.lot_id = l.id  AND b.bet_sum = (SELECT MAX(b.bet_sum) FROM bets AS b  WHERE b.lot_id = l.id) JOIN categories AS c ON c.id = l.category_id   ORDER BY l.creation_date';
+    $sql = 'SELECT  l.end_date,l.creation_date, l.id as lot_id, l.title ,l.first_price,l.image,b.bet_sum AS current_price, c.translation as category FROM lots AS l LEFT JOIN bets AS b ON b.lot_id = l.id  AND b.bet_sum = (SELECT MAX(b.bet_sum) FROM bets AS b  WHERE b.lot_id = l.id) JOIN categories AS c ON c.id = l.category_id   ORDER BY l.end_date ASC';
     $lots = sql_request($con, $sql);
     foreach ($lots as $key => &$lot) {
         if ($lot['current_price'] === null) {
             $lot['current_price'] = $lot['first_price'];
         }
-        if ((date_diff(
-            new DateTime($lot['end_date']),
-            new DateTime()
-        )->days >= 1) || new DateTime($lot['end_date']) < new DateTime()) {
+        if (new DateTime($lot['end_date']) < new DateTime()) {
             unset($lots[$key]);
         }
     }
@@ -48,6 +45,9 @@ function get_lot_info($con, $lot_id)
 {
     $sql = 'SELECT  l.*, b.bet_sum AS current_price, c.translation as category FROM lots AS l LEFT JOIN bets AS b ON b.lot_id = l.id  AND b.bet_sum = (SELECT MAX(b.bet_sum) FROM bets AS b  WHERE b.lot_id = l.id) LEFT JOIN categories AS c ON c.id = l.category_id WHERE l.id = ? ORDER BY  b.bet_sum  DESC;';
     $lot = sql_request($con, $sql, [$lot_id], true);
+    if ($lot['current_price'] === null) {
+        $lot['current_price'] = $lot['first_price'];
+    }
 
     return $lot;
 }
@@ -75,8 +75,8 @@ function get_lot_bets($con, $lot_id)
  * @param string $message описание
  * @param string $name имя фотографии
  * @param int $bet начальная ставка
- * @param int $step  шаг ставки
- * @param int $author_id  id автора поста
+ * @param int $step шаг ставки
+ * @param int $author_id id автора поста
  * @param array $date дата окончания
  *
  * @return bool результат
@@ -160,6 +160,7 @@ function get_password_by_email($con, $email)
 {
     $sql = 'SELECT password FROM users WHERE email = ?';
     $password = sql_request($con, $sql, [$email]);
+
     return $password;
 }
 
@@ -173,6 +174,7 @@ function get_user_info($con, $email)
 {
     $sql = 'SELECT *  FROM users WHERE email = ?';
     $user_info = sql_request($con, $sql, [$email]);
+
     return $user_info;
 }
 
@@ -181,13 +183,14 @@ function get_user_info($con, $email)
  * @param mysqli $con ресурс соединения
  * @param string $search поисковый запрос
  * @param int $offset пагинация
- * @param int  $limit количество
+ * @param int $limit количество
  * @return array лоты
  */
 function get_lots_by_search($con, $search, $offset, $limit)
 {
     $sql = 'SELECT * FROM  lots WHERE MATCH(description,title) AGAINST(?) LIMIT ? OFFSET ?';
     $lots = sql_request($con, $sql, [$search, $limit, $offset]);
+
     return $lots;
 }
 
@@ -201,6 +204,7 @@ function get_lots_count_by_search($con, $search)
 {
     $sql = 'SELECT COUNT(id) as count  FROM  lots WHERE MATCH(description,title) AGAINST(?)';
     $count = sql_request($con, $sql, [$search]);
+
     return $count[0]['count'];
 }
 
@@ -208,27 +212,29 @@ function get_lots_count_by_search($con, $search)
  * Запрос на добавление ставки
  * @param mysqli $con ресурс соединения
  * @param string $sum сумма ставки
- * @param string $lot_id  id лота
- * @param string $author_id  автор ставки
+ * @param string $lot_id id лота
+ * @param string $author_id автор ставки
  * @return array лоты
  */
-function insert_new_bet($con, int $sum, int  $lot_id, int $author_id)
+function insert_new_bet($con, int $sum, int $lot_id, int $author_id)
 {
     $sql = 'INSERT INTO bets(bet_sum, bet_author, lot_id ) VALUES (?, ?, ?)';
     $result = sql_insert($con, $sql, [$sum, $author_id, $lot_id]);
+
     return $result;
 }
 
 /**
  * Запрос на получение ставки по id
  * @param mysqli $con ресурс соединения
- * @param int $id  id ставки
+ * @param int $id id ставки
  * @return array ставку
  */
 function get_bet_by_id($con, $id)
 {
     $sql = 'SELECT b.*,users.login FROM bets AS b JOIN users ON users.id = b.bet_author  WHERE b.id = ? ';
     $bet = sql_request($con, $sql, [$id]);
+
     return $bet;
 }
 
@@ -242,6 +248,7 @@ function get_my_bets($con, $my_id)
 {
     $sql = 'SELECT b.*, l.title, l.end_date, l.image, c.translation as category FROM bets AS b JOIN lots as l ON l.id = b.lot_id JOIN categories as c ON c.id = l.category_id  WHERE b.bet_author = ? ORDER BY b.creation_date DESC';
     $my_bets = sql_request($con, $sql, [$my_id]);
+
     return $my_bets;
 }
 
@@ -254,6 +261,7 @@ function get_lots_without_winners($con)
 {
     $sql = 'SELECT l.id, l.title, max(b.id) as max_bet_id from lots as l  join bets as b on b.lot_id = l.id   where winner_id is null AND end_date < CURRENT_TIMESTAMP()  group by l.id';
     $lots = sql_request($con, $sql);
+
     return $lots;
 }
 
@@ -269,6 +277,7 @@ function set_lot_winner($con, $winner_id, $lot_id)
 {
     $sql = 'UPDATE lots SET winner_id = ? WHERE id = ? ';
     $update = sql_insert($con, $sql, [$winner_id, $lot_id]);
+
     return $update;
 }
 
@@ -282,6 +291,7 @@ function select_user_info_by_id($con, $id)
 {
     $sql = 'SELECT *  from users WHERE id = ? ';
     $info = sql_request($con, $sql, [$id]);
+
     return $info[0];
 }
 
@@ -293,8 +303,14 @@ function select_user_info_by_id($con, $id)
  */
 function get_lots_by_category($con, $category_id, $limit, $offset)
 {
-    $sql = 'SELECT *  from lots WHERE category_id = ? LIMIT ? OFFSET ?';
+    $sql = 'SELECT  l.end_date,l.creation_date, l.id,  l.title ,l.first_price,l.image,b.bet_sum AS current_price, c.title as category FROM lots AS l LEFT JOIN bets AS b ON b.lot_id = l.id  AND b.bet_sum = (SELECT MAX(b.bet_sum) FROM bets AS b  WHERE b.lot_id = l.id) JOIN categories AS c ON c.id = l.category_id   WHERE category_id = ?  ORDER BY l.creation_date LIMIT ? OFFSET ? ';
     $lots = sql_request($con, $sql, [$category_id, $limit, $offset]);
+    foreach ($lots as $key => &$lot) {
+        if ($lot['current_price'] === null) {
+            $lot['current_price'] = $lot['first_price'];
+        }
+    }
+
     return $lots;
 }
 
@@ -308,6 +324,7 @@ function get_lots_count_sorted_by_category($con, $category_id)
 {
     $sql = 'SELECT count(id) as count from lots WHERE category_id = ? ';
     $lots = sql_request($con, $sql, [$category_id]);
+
     return $lots[0]['count'];
 }
 
@@ -321,5 +338,6 @@ function get_category_translation($con, $category_id)
 {
     $sql = 'SELECT translation from categories WHERE id = ? ';
     $category_name = sql_request($con, $sql, [$category_id]);
+
     return $category_name[0]['translation'];
 }

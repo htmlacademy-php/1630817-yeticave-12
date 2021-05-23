@@ -23,14 +23,14 @@ if ($is_auth) {
         $errors['lot-date'] = date_validation($_POST['lot-date']);
         $errors['photo'] = photo_validation($_FILES['lot_img']);
         if (empty(array_filter($errors))) {
-            save_photo($_FILES['lot_img']);
+            $file_name = save_photo($_FILES['lot_img']);
             $category_id = get_category_id($con, $_POST['category']);
             $result = insert_photo(
                 $con,
                 $_POST['lot-name'],
                 $category_id[0]['id'],
                 $_POST['message'],
-                '../uploads/'.$_FILES['lot_img']['name'],
+                '../uploads/'.$file_name,
                 $_POST['lot-rate'],
                 $_POST['lot-step'],
                 $_POST['lot-date'],
@@ -61,6 +61,9 @@ if ($is_auth) {
         'user_name' => $user_name,
         'is_auth' => $is_auth,
         'title' => 'Ошибка 403',
-        'main_content' => include_template('403.php', ['categories' => $categories, 'message' => 'Добавление лота доступно только зарегестрированным пользователям.']),
+        'main_content' => include_template('403.php', [
+            'categories' => $categories,
+            'message' => 'Добавление лота доступно только зарегестрированным пользователям.',
+        ]),
     ]));
 }
