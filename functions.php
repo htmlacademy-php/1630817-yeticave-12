@@ -207,9 +207,11 @@ function photo_validation($photo)
  */
 function save_photo($photo)
 {
-    $file_name = $photo['name'];
+    $format = substr($photo['name'], strrpos($photo['name'], '.') + 1);
+    $file_name = md5(microtime() . $photo['name']) . '.' .$format;
     $file_path = __DIR__.'/uploads/';
     move_uploaded_file($photo['tmp_name'], $file_path.$file_name);
+    return $file_name;
 }
 
 
@@ -247,6 +249,9 @@ function password_validation($password, $password_from_db)
 {
     if (empty($password)) {
         return 'Поле не заполнено';
+    }
+    if (empty($password_from_db)) {
+        return 'Проверьте правильность написание email';
     }
     if (! password_verify($password, $password_from_db[0]['password'])) {
         return "Неверный логин или пароль";

@@ -9,9 +9,8 @@
                         <img src="<?= strip_tags($lot['image']); ?>" width="350" height="260" alt="">
                     </div>
                     <div class="lot__info">
-                        <span class="lot__category"><?= strip_tags($lot['category']); ?></span>
                         <h3 class="lot__title"><a class="text-link"
-                                                  href="lot.php?lot_id=<?= strip_tags($lot['lot_id']); ?>"><?= strip_tags($lot['title']); ?></a>
+                                                  href="lot.php?lot_id=<?= strip_tags($lot['id']); ?>"><?= strip_tags($lot['title']); ?></a>
                         </h3>
                         <div class="lot__state">
                             <div class="lot__rate">

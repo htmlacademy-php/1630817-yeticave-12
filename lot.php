@@ -9,7 +9,7 @@ $errors = [];
 
 if ($is_auth && $_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = get_lot_info($con, $_POST['lot_id']);
-    $setting_bets_is_not_active = $lot['end_date'] < date("Y-m-d H:i:s") || !empty($lot['winner_id']) ;
+    $setting_bets_is_not_active = $lot['end_date'] < date("Y-m-d H:i:s") || !empty($lot['winner_id']) || (date_diff( new DateTime($lot['end_date']), new DateTime() )->days >= 1)  ;
     if (! empty($lot) && !$setting_bets_is_not_active) {
         $min_cost = (int)$lot['current_price'] + (int)$lot['bet_step'];
         $errors['cost'] = validate_cost($_POST['cost'], $min_cost);
@@ -36,7 +36,7 @@ if ($is_auth && $_SERVER['REQUEST_METHOD'] == 'POST') {
 $check_get_request = isset($_GET['lot_id']) ? is_numeric($_GET['lot_id']) : false;
 if ($check_get_request) {
     $lot = get_lot_info($con, $_GET['lot_id']);
-    $setting_bets_is_not_active = $lot['end_date'] < date("Y-m-d H:i:s") || !empty($lot['winner_id']);
+    $setting_bets_is_not_active = $lot['end_date'] < date("Y-m-d H:i:s") || !empty($lot['winner_id']) || (date_diff( new DateTime($lot['end_date']), new DateTime() )->days >= 1) ;
     if (! empty($lot)) {
         $bets = get_lot_bets($con, $_GET['lot_id']);
         $bets_count = count($bets);
